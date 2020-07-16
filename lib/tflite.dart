@@ -83,6 +83,7 @@ class Tflite {
         "numResults": numResults,
         "threshold": threshold,
         "asynch": asynch,
+        "backCamera":backCamera
       },
     );
   }

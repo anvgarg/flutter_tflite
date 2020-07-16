@@ -371,7 +371,7 @@ public class TflitePlugin implements MethodCallHandler {
     return feedInputTensor(bitmapRaw, mean, std);
   }
 
-  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation) throws IOException {
+  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation, boolean backCamera) throws IOException {
     ByteBuffer Y = ByteBuffer.wrap(bytesList.get(0));
     ByteBuffer U = ByteBuffer.wrap(bytesList.get(1));
     ByteBuffer V = ByteBuffer.wrap(bytesList.get(2));
@@ -396,6 +396,9 @@ public class TflitePlugin implements MethodCallHandler {
 
     Matrix matrix = new Matrix();
     matrix.postRotate(rotation);
+    if(backCamera == false){
+      matrix.postScale(-1.0f,1.0f);
+    }
     bitmapRaw = Bitmap.createBitmap(bitmapRaw, 0, 0, bitmapRaw.getWidth(), bitmapRaw.getHeight(), matrix, true);
 
     return feedInputTensor(bitmapRaw, mean, std);
@@ -1217,8 +1220,9 @@ public class TflitePlugin implements MethodCallHandler {
     int numResults = (int) args.get("numResults");
     double threshold = (double) args.get("threshold");
     int nmsRadius = (int) args.get("nmsRadius");
+    boolean backCamera = (boolean) arg.get("backCamera");
 
-    ByteBuffer imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation);
+    ByteBuffer imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, backCamera);
 
     new RunPoseNet(args, imgData, numResults, threshold, nmsRadius, result).executeTfliteTask();
   }
