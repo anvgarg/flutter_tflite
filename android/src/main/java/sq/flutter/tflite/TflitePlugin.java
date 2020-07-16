@@ -1220,7 +1220,7 @@ public class TflitePlugin implements MethodCallHandler {
     int numResults = (int) args.get("numResults");
     double threshold = (double) args.get("threshold");
     int nmsRadius = (int) args.get("nmsRadius");
-    boolean backCamera = (boolean) arg.get("backCamera");
+    boolean backCamera = (boolean) args.get("backCamera");
 
     ByteBuffer imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, backCamera);
 
