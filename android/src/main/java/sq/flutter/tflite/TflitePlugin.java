@@ -371,7 +371,7 @@ public class TflitePlugin implements MethodCallHandler {
     return feedInputTensor(bitmapRaw, mean, std);
   }
 
-  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation, boolean backCamera) throws IOException {
+  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation, boolean backCamera=true) throws IOException {
     ByteBuffer Y = ByteBuffer.wrap(bytesList.get(0));
     ByteBuffer U = ByteBuffer.wrap(bytesList.get(1));
     ByteBuffer V = ByteBuffer.wrap(bytesList.get(2));
