@@ -71,6 +71,7 @@ class Tflite {
       int numResults = 5,
       double threshold = 0.1,
       bool asynch = true,
+      }
      ) async {
     return await _channel.invokeMethod(
       'runModelOnFrame',
@@ -392,7 +393,7 @@ class Tflite {
       double threshold = 0.5,
       int nmsRadius = 20,
       bool asynch = true,
-      bool backCamera = true}}) async {
+      bool backCamera = true}) async {
     return await _channel.invokeMethod(
       'runPoseNetOnFrame',
       {
