@@ -371,7 +371,7 @@ public class TflitePlugin implements MethodCallHandler {
     return feedInputTensor(bitmapRaw, mean, std);
   }
 
-  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation, boolean backCamera=true) throws IOException {
+  ByteBuffer feedInputTensorFrame(List<byte[]> bytesList, int imageHeight, int imageWidth, float mean, float std, int rotation, boolean backCamera) throws IOException {
     ByteBuffer Y = ByteBuffer.wrap(bytesList.get(0));
     ByteBuffer U = ByteBuffer.wrap(bytesList.get(1));
     ByteBuffer V = ByteBuffer.wrap(bytesList.get(2));
@@ -538,7 +538,7 @@ public class TflitePlugin implements MethodCallHandler {
 
       startTime = SystemClock.uptimeMillis();
 
-      imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation);
+      imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, true);
     }
 
     protected void runTflite() {
@@ -611,7 +611,7 @@ public class TflitePlugin implements MethodCallHandler {
     int BLOCK_SIZE = (int) args.get("blockSize");
     int NUM_BOXES_PER_BLOCK = (int) args.get("numBoxesPerBlock");
 
-    ByteBuffer imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation);
+    ByteBuffer imgData = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, true);
 
     if (model.equals("SSDMobileNet")) {
       new RunSSDMobileNet(args, imgData, NUM_RESULTS_PER_CLASS, THRESHOLD, result).executeTfliteTask();
@@ -935,7 +935,7 @@ public class TflitePlugin implements MethodCallHandler {
 
       outputType = args.get("outputType").toString();
       startTime = SystemClock.uptimeMillis();
-      input = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation);
+      input = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, true);
       output = ByteBuffer.allocateDirect(input.limit());
       output.order(ByteOrder.nativeOrder());
 
@@ -1077,7 +1077,7 @@ public class TflitePlugin implements MethodCallHandler {
       outputType = args.get("outputType").toString();
 
       startTime = SystemClock.uptimeMillis();
-      input = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation);
+      input = feedInputTensorFrame(bytesList, imageHeight, imageWidth, IMAGE_MEAN, IMAGE_STD, rotation, true);
       output = ByteBuffer.allocateDirect(tfLite.getOutputTensor(0).numBytes());
       output.order(ByteOrder.nativeOrder());
     }
