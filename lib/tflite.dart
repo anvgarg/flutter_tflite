@@ -70,7 +70,8 @@ class Tflite {
       int rotation: 90, // Android only
       int numResults = 5,
       double threshold = 0.1,
-      bool asynch = true}) async {
+      bool asynch = true,
+      backCamera = true}) async {
     return await _channel.invokeMethod(
       'runModelOnFrame',
       {
